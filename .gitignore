@@ -1,8 +1,7 @@
-.DS_Store
-Thumbs.db
-db.json
-*.log
-node_modules/
-public/
 /QFPayAndroidGroup.github.io.iml
-.deploy*/
+_site
+node_modules
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+

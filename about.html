@@ -1,0 +1,119 @@
+---
+layout: page
+title: "About"
+description: "Hey, this is YamLee."
+header-img: "img/post-bg-universe.jpg"
+---
+
+<!-- Language Selector -->
+<!--<select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">-->
+    <!--<option value="0" selected> 中文 Chinese </option>-->
+    <!--<option value="1"> 英语 English </option>-->
+<!--</select>-->
+
+<!-- Chinese Version -->
+<div class="zh">
+    <blockquote>
+        专注移动开发领域,与code为伍,借音乐常伴
+    </blockquote>
+
+    <p>移动开发者,主攻Android开发,同事也涉猎一些ios开发</p>
+
+    <p>Web开发,Python</p>
+
+    <p>音乐人,组过乐队,当过主唱,开过酒吧,梦想带着Mac,吉他走天涯</p>
+
+    <p>I'm YamLee<b> 李炎 </b><br>
+
+    <!--<hr>-->
+    <!--附上认真版的简历:-->
+    <!--<ul class="active-list">-->
+        <!--<li><a href="{{site.baseUrl}}/attach/2016_Hux_DEV_en.pdf"> 2016_Hux_DEV_en </a></li>-->
+        <!--<li><a href="{{site.baseUrl}}/attach/2016_Hux_PD_en.pdf"> 2016_Hux_PD_en </a></li>-->
+        <!--<li><a href="{{site.baseUrl}}/attach/2015_Hux_SDE_cn.pdf"> 2015_Hux_SDE_cn </a></li>-->
+        <!--<li><a href="{{site.baseUrl}}/attach/2015_Hux_UX & PD_cn.pdf"> 2015_Hux_UX & PD_cn </a></li>-->
+        <!--<li><a href="{{site.baseUrl}}/attach/2015_Hux_UX & PD_en.pdf"> 2015_Hux_UX & PD_en </a></li>-->
+    <!--</ul>-->
+    <!--一些期待成为的角色:-->
+    <!--<ul>-->
+        <!--<li> UX Unicorn </li>-->
+        <!--<li> Product Engineer </li>-->
+        <!--<li> Creative Technologist </li>-->
+        <!--<li> End to End JavaScript Engineer</li>-->
+        <!--<li> "Full Stack" Engineer/Designer </li>-->
+    <!--</ul>-->
+</div>
+
+<!-- English Version -->
+<div class="en">
+    <blockquote>
+        Designer or Engineer, things in between.
+    </blockquote>
+
+    <p>Student, major in New Media Art of <a href="https://en.wikipedia.org/wiki/Communication_University_of_China">Communication University of China</a>, which is a interdisciplinary subject of technology and art, and now Senior.</p>
+
+    <p>Programmer, JavaScript Engineer Intern of <a href="http://m.wepiao.com/index.html">Wechat Movie</a>, previous worked in <a href="http://alitrip.com" target="_blank">Alibaba Trip</a> as Front End Engineer for one year, looking for opportunities abroad.</p>
+
+    <p>Designer, offered as UI/UX Designer Intern by Alibaba Group, Microsoft Bing etc. Experienced in Motion Graphic Design, also familer with Layout and Typography.</p>
+
+    <p>Product Design and Program Management is also attractive and comfortable to me.</p>
+
+    <p>My Chinese name is <b>Huang Xuan</b>, you can call me English name <b>Hux</b> for short.</p>
+
+    <hr>
+    Interested in more details? Just checkout my resumes:
+    <ul class="active-list">
+        <li><a href="{{site.baseUrl}}/attach/2016_Hux_DEV_en.pdf"> 2016_Hux_DEV_en </a></li>
+        <li><a href="{{site.baseUrl}}/attach/2016_Hux_PD_en.pdf"> 2016_Hux_PD_en </a></li>
+        <li><a href="{{site.baseUrl}}/attach/2015_Hux_UX & PD_en.pdf"> 2015_Hux_UX & PD_en </a></li>
+    </ul>
+
+    My dream position include:
+    <ul>
+        <li> UX Unicorn </li>
+        <li> Product Engineer </li>
+        <li> Creative Technologist </li>
+        <li> End to End JavaScript Engineer</li>
+        <li> "Full Stack" Engineer/Designer </li>
+    </ul>
+</div>
+
+
+<!-- Handle Language Change -->
+<script type="text/javascript">
+    var $zh = document.querySelector(".zh");
+    var $en = document.querySelector(".en");
+    function onLanChange(index){
+        if(index == 0){
+            $zh.style.display = "block";
+            $en.style.display = "none";
+        }else{
+            $en.style.display = "block";
+            $zh.style.display = "none";
+        }
+    }
+    onLanChange(0);
+</script>
+
+
+{% if site.useDuoshuo %}
+<!-- 多说评论框 start -->
+    <div class="comment">
+        <div class="ds-thread" data-thread-key="{{page.id}}" data-title="{{page.title}}" data-url="{{site.url}}/about/"></div>
+    </div>
+<!-- 多说评论框 end -->
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"{{site.duoshuo_username}}"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+{% endif %}
