@@ -1,10 +1,10 @@
 # Site settings
-title: YamLee Blog
+title: QF Tech Corner
 header-img: img/home-bg.jpg
 email: liyaninhn@gmail.com
-description: "极致到简单"
+description: "乐于分享"
 baseurl: ""
-url: "http://yamlee.github.io"
+url: "http://qfpayandroidgroup.github.io/"
 
 # Comment setting
 duoshuo_username: yamlee
@@ -49,7 +49,7 @@ useGoogleAnalysis: true     # TODO
 # Sidebar settings
 sidebar: true
 sidebar-featured-tags: true
-sidebar-about-description: "专注移动开发领域,与code为伍,借音乐常伴"
+sidebar-about-description: "钱方Android技术开发组分享"
 sidebar-avatar: /img/avatar-yamlee.jpg     # use absolute URL.
 
 # Friends
