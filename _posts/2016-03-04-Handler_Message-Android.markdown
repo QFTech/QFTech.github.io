@@ -4,7 +4,7 @@ title:      "深入剖析Handler、Message、MessageQueue"
 subtitle:   "android handler源码"
 date:       2016-03-04
 author:     "Chenfeiyue"
-header-img: "img/android_pic_bg.png"
+header-img: "img/post-bg-android.png"
 tags:
     - Android
     - 分享
