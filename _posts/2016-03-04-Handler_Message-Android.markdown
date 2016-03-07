@@ -1,10 +1,10 @@
 ---
 layout:     post
-title:      "Handler、Message、MessageQueue随笔"
-subtitle:   "内部交流分享"
+title:      "深入剖析Handler、Message、MessageQueue"
+subtitle:   "android handler源码"
 date:       2016-03-04
 author:     "Chenfeiyue"
-header-img: "img/post-bg-js-version.jpg"
+header-img: "img/android_pic_bg.jpg"
 tags:
     - Android
     - 分享
