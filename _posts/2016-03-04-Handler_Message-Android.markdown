@@ -2,7 +2,7 @@
 layout:     post
 title:      "Handler、Message、MessageQueue随笔"
 subtitle:   "内部交流分享"
-date:       2016-03-07
+date:       2016-03-04
 author:     "Chenfeiyue"
 header-img: "img/post-bg-js-version.jpg"
 tags:
@@ -15,7 +15,6 @@ tags:
 ## Handler、Message   
 ### 1、基本用法：   
 创建Handler重写handlerMessage（Message msg）处理消息 
-
 ```
 Handler handler = new Handler(){
     @Override
@@ -33,7 +32,6 @@ Handler handler = new Handler(new Handler.Callback(){
     }
 });
 ```
-
 ```
 handler.sendMessage(msg);
 handler.post(new Runnable(){...});
@@ -42,7 +40,6 @@ handler.post(new Runnable(){...});
 
 ### 2、主线程默认已经创建Looper，无须重复创建
 ActivityThread.java
-
 ```
 public static void main(String[] args) {
     Looper.prepareMainLooper();
@@ -58,7 +55,6 @@ Handler负责把消息放入线程的消息队列中以及分发消息。
 ### 1、创建Handler
 创建Handler之前需要创建Looper，否则抛出throw new RuntimeException(
                 "Can't create handler inside thread that has not called Looper.prepare()");
-
 
 ```
 /*
@@ -80,7 +76,6 @@ public Handler(Callback callback, boolean async) {
     mAsynchronous = async;  //标志Message是否为异步Message.setAsynchronous
 }
 ```
-
 ```
 /*
 * @hide   
@@ -93,7 +88,6 @@ public Handler(Looper looper, Callback callback, boolean async) {
 }
 
 ```
-
 ### 2、发送消息到消息队列MesageQueue
 
 Handler中提供了很多个发送消息的方法，其中除了sendMessageAtFrontOfQueue()方法之外，其它的发送消息方法最终都会辗转调用到sendMessageAtTime()方法中
@@ -112,14 +106,12 @@ SystemClock.uptimeMillis() + 3000; // 从开机到现在的毫秒数（手机睡
 ![post（Runnable）](http://img.blog.csdn.net/20160303001511603)
 
 Post Runnable 到消息队列。将Runnable转换为Message
-
 ```
 private static Message getPostMessage(Runnable r) {
         Message m = Message.obtain();
         m.callback = r; // msg的callback指向Runnale
 }
 ```
-
 ### 3、消息队列中移除消息
 ![移除消息](http://img.blog.csdn.net/20160303001534260)
  
@@ -130,7 +122,6 @@ private static Message getPostMessage(Runnable r) {
 **Handler 里面的mLooper所在的线程决定了 handleMessage 方法所在的线程**
 
 message的处理比较简单，先判断Message中有没有指定的callback对象（Runnable），有的话就调用callback的run方法，没有则调用我们自己创建Handler对象时实现的handleMessage(Message msg)方法，就这样实现了消息的分发。
-
 ```
 public void dispatchMessage(Message msg) {
     if (msg.callback != null) {  
@@ -146,10 +137,8 @@ public void dispatchMessage(Message msg) {
     }
 }
 ```
-
 ###5、子线程中创建Handler  
 在一个子线程中创建Handler时，必须初始化该线程的Looper对象，因为普通的Thread默认是没有消息队列的。
-
 ```	
 class MyThread extends Thread {
     public Handler mHandler;
@@ -164,7 +153,6 @@ class MyThread extends Thread {
 	}
 }
 ```
-
 ### 6、Handler的特点
 1.handler可以在任意线程发送消息，这些消息会被添加到关联的MQ上。
 2.handler是在它关联的looper线程中处理消息的。
@@ -185,7 +173,6 @@ Message本身是一个Parcelable对象
 4. 其他的可以通过Bundle进行传递
 Message可以通过new Message构造来创建一个新的Message,但是这种方式很不好，不建议使用。最好使用Message.obtain()来获取Message实例,它创建了消息池来处理的。
 ### 1、	创建Message
-
 ```
 Message msg = new Message();     (不要这样写)
 
@@ -198,7 +185,6 @@ public static Message obtain(Handler h) {
     return m;
 }
 ```
-
 ```
 /**
 * Return a new Message instance from the global pool. Allows us to
@@ -221,7 +207,6 @@ public static Message obtain() {
 ```
 
 ### 2、Message的回收缓存
-
 ```
 /**
 * Recycles a Message that may be in-use.
@@ -252,7 +237,6 @@ void recycleUnchecked() {
     }
 }
 ```
-
 在一个无限for循环中遍历消息队列，然后调用Handler进行消息分发处理，分发之后调用recycleUnchecked ()把Message对象回收到Message Pool中（最大值为50个，若消息池中已经有50个Message，则不做缓存）
 
 例：
@@ -276,7 +260,6 @@ Message.setAsynchronous(Boolean async) // 详见“MessageQueue同步分割栏�
 
 ## Looper解析
 ### 1、Looper.prepare()
-
 ```
 private static void prepare(boolean quitAllowed) {
 	if (sThreadLocal.get() != null) {
@@ -285,7 +268,6 @@ private static void prepare(boolean quitAllowed) {
 	sThreadLocal.set(new Looper(quitAllowed));
 }
 ```
-
 创建一个Looper对象，它的内部维护了一个消息队列MQ。注意，一个Thread只能有一个Looper对象，不能多次调用Looper.prepare()，否则将抛出异常。
 
 ### 2、Looper.loop()
@@ -313,7 +295,6 @@ public static void loop() {
     }
 }
 ```
-
 ### 3、Looper.quit()  quitSafely();
 
 调用mQueue.quit();
@@ -334,7 +315,6 @@ getThread() 获取当前Looper所在线程
 MessageQueue是一个按照when大小排列的链表结构。
 ### 1、enqueueMessage(Message msg, long when)
 同一个没有被处理的message不能多次加入队列
-
 ```
 // 添加消息到消息队列, 最终的mMessages是按照when的由小到大排列
 boolean enqueueMessage(Message msg, long when) {
@@ -391,13 +371,11 @@ boolean enqueueMessage(Message msg, long when) {
     return true;
 }
 ```
-
 nativeWake，和natePollonce的作用：
 　　nativePollOnce(mPtr, nextPollTimeoutMillis);暂时无视mPtr参数，阻塞等待nextPollTimeoutMillis毫秒的时间返回，与Object.wait(long timeout)相似
 　　nativeWake(mPtr);暂时无视mPtr参数，唤醒等待的nativePollOnce函数返回的线程，从这个角度解释nativePollOnce函数应该是最多等待nextPollTimeoutMillis毫秒
 
 ### 2、removeMessage(int what);
-
 ```
 //删除所有what 和obj = object 的msg
 void removeMessages(Handler h, int what, Object object) {
@@ -438,7 +416,6 @@ void removeMessages(Handler h, int what, Object object) {
 ```
 
 ### 3、Message next()
-
 ```
 Message next() {
     // Return here if the message loop has already quit and been disposed.
@@ -552,9 +529,7 @@ Message next() {
     }
 }
 ```
-
 ### 4、MessageQueue.IdleHandler
-
 ```
 messageQueue.addIdleHandler(new MessageQueue.IdleHandler() {
     /**
@@ -582,7 +557,6 @@ messageQueue.addIdleHandler(new MessageQueue.IdleHandler() {
 **removeSyncBarrier(int token)** // 从MQ中移除同步分割栏
 
 ### 6、清空MQ
-
 ```
 void quit(boolean safe) {
     if (!mQuitAllowed) {   //UI线程的Looper消息队列不可退出 mQuitAllowed = false
@@ -605,7 +579,6 @@ void quit(boolean safe) {
     }
 }
 ```
-
 ```
 // 移除MQ中的所有Message
 private void removeAllMessagesLocked() {
@@ -618,7 +591,6 @@ private void removeAllMessagesLocked() {
     mMessages = null;
 }
 ```
-
 ```
 // 移除MQ所有的延迟消息 n.when > now
 private void removeAllFutureMessagesLocked() {
@@ -650,7 +622,6 @@ private void removeAllFutureMessagesLocked() {
     }  
 }
 ```
-
 ## Handler-memory-leak
 http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html
 ## 参考：
