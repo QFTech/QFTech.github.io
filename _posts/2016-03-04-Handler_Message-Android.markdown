@@ -1,30 +1,15 @@
-﻿Handler、Message、Looper、MessageQueue随笔  
-1、基本用法：   
-2、主线程默认已经创建Looper，无须重复创建   
-Handler解析   
-1、创建Handler  
-2、发送消息到消息队列MesageQueue	   
-3、消息队列中移除消息   
-4、消息事件处理   
-5、子线程中创建Handler   
-6、Handler的特点   
-Message 解析   
-1、创建Message   
-2、Message的回收缓存   
-3、msg. markInUse();	   
-Looper解析   
-1、Looper.prepare()   
-2、Looper.loop()	   
-3、Looper.quit()  quitSafely();   
-MessageQueue   
-1、enqueueMessage(Message msg, long when)   
-2、removeMessage(int what);   
-3、Message next()
-4、MessageQueue.IdleHandler   
-5、同步分割栏   
-6、清空MQ
-Handler-memory-leak
-参考：   
+---
+layout:     post
+title:      "Handler、Message、MessageQueue随笔"
+subtitle:   "内部交流分享"
+date:       2016-03-04
+author:     "Chenfeiyue"
+header-img: "img/post-bg-js-version.jpg"
+tags:
+    - Android
+    - 分享
+    - Blog
+---
 
 
 ## Handler、Message   
