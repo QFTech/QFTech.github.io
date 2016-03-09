@@ -1,10 +1,10 @@
 ---
 layout:     post
-title:      "钱方Android开发组内部分享计划"
-subtitle:   "内部交流分享"
+title:      "RxJava 浅析"
+subtitle:   "RxJava使用及操作符介绍"
 date:       2016-02-25
 author:     "张志超"
-header-img: "img/post-bg-js-version.jpg"
+header-img: "img/post-bg-android.jpg"
 tags:
     - Android
     - 分享
