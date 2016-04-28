@@ -1,0 +1,201 @@
+---
+layout:     post
+title:      "Appium使用总结"
+subtitle:   "Appium自动化测试使用"
+date:       2016-04-28
+author:     "LiYan"
+header-img: "img/post-bg-android.jpg"
+tags:
+    - Appium
+    - Automation Test
+    - Blog
+---
+
+# Appium使用总结
+
+## 目录
+
+1. [Appium介绍](#Appium介绍)
+2. [环境搭建](#环境搭建)
+3. [Appium使用](#Appium使用)
+4. [总结](#总结)
+
+
+## Appium介绍
+
+Appium是一款开源的跨平台（Android，IOS,WebOS,还不支持WinPhone）自动化UI测试框架，它支持基于Android SDK或IOS sdk开发的原生界面UI测试，同时也支持webView容器内的Html界面的UI测试。
+
+Appium的基本使用流程：
+
+1. 获取Android APK包或者IOS的ipa包，无需在源码中引入测试sdk
+2. 运行Appium Inspect程序，appium会自动将程序包安装在真机或者模拟器上
+3. 通过inspect程序找到测试界面的控件ID
+4. 编写测试代码。代码主要功能：根据控件ID获取控件，给控件设定响应动作，然后断言响应动作是否符合预期结果
+5. 输出结果，测试运行结束
+
+## 环境搭建
+
+Appium环境有命令行环境和图形界面环境，在osx,windows,unix平台上都可安装，但需要注意的是因为IOS的测试需要依赖xCode,xCode又只能运行在osX上，也就是说如果想要测试IOS应用，需要在osx平台上；而Android在三个平台上都可以应用，所以如果想同时测试IOS和Android应用，就只能在osx上搭建Appium环境。
+
+接下来将分为两部分：Appium GUI环境的搭建和命令行环境的搭建，由于命令行还未实践，后续再更新，这里主要先讲GUI环境搭建
+
+
+### Appium GUI环境搭建
+
+ Appium官方要求的环境如下（供参考）
+ 
+ ![](http://ww2.sinaimg.cn/large/6b051377jw1f3c9yxahktj21kw0fyjub.jpg)
+
+#### 1.Appium下载
+
+Appium最新版本为1.4.13，可以直接进入[Appium官网](http://appium.io/)进行下载，这里主要介绍下Mac下安装的过程及一些注意事项
+
+#### 2.安装并检测运行环境
+
+Appium安装成功后界面如下所示
+
+![](http://ww1.sinaimg.cn/mw690/6b051377gw1f3c9p57p43j21100we76e.jpg)
+
+首先需要运行程序环境检测，点击从左至右第三个按钮（听诊器图标），点击按钮会运行Appium的环境自检程序，如果运行环境都配置正确，会在终端得到如下结果
+
+![](http://ww3.sinaimg.cn/large/6b051377gw1f3c9t7jldij20wi0kctcs.jpg)
+
+如果Appium要求配置的环境没有正确，在运行检测程序的时候会报错，也会包含详细的错误提示信息，接下来，主要介绍我在安装的时候踩到的几个坑：
+
+#### * 设置Android环境时没有设置正确的JAVA_HOME,ANDROID_HOME环境变量
+
+Android运行需要Java运行环境：JDK和Android开发包：Android SDK，在官网上下载安装JDK和SDK需要将安装路径写到系统的运行路径中
+
+```
+export ANDROID_HOME=/Users/yamlee/Library/Android/sdk
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME/bi
+``` 
+如果系统终端使用bash，可以通过**vi .bashrc**命令编辑将ANDROID_HOME和JAVA_HOME替换为你自己安装的路径，然后将上面的代码加入其中，运行**source .bashrc**命令使其生效
+
+> 终端如果使用的是zsh，那么需要编辑**.zshrc**文件而不是**.bashrc**文件
+
+#### * IOS环境要保证系统安装Xcode，安装ipa包可借助ideviceinstaller
+
+ios运行测试需要运行instrumentation，同时如果是及时编译也需要xcode进行编译，所以系统必须安装xcode
+
+在测试时要把需要测试的ipa包安装到真机或模拟器上，需要借助第三方的程序，这里可以使用ideviceisntaller,安装也很简单，直接通过brew安装
+
+```
+brew install ideviceinstaller
+```
+
+### Appium命令行环境搭建
+
+Appium命令行环境的搭建，官方文档上介绍的比较详细，可以参考[Appium Doc](http://appium.io/slate/en/tutorial/android.html?java#introduction)安装搭建
+
+> 关于命令行环境本人未做完整实践，暂时还没有更多内容，等后续实践后，再做更新
+
+### Appium环境搭建总结
+
+Appium是基于nodeJS实现的，如果是命令行环境会需要很多的依赖库，搭建起来还是比较麻烦的；GUI把环境封装好了，但是更新速度还停留在2015.10月份，赶不上命令行环境的更新，这个需要衡量好。总的来说Appium环境搭建需要手动配置的点还是蛮多的
+
+
+## Appium使用
+
+Appium环境自检都没问题后，可以点击右上角**launch**按钮，启动成功，则可以看到如下界面
+
+![](http://ww3.sinaimg.cn/large/6b051377jw1f3cb0jag0oj21100tqk2c.jpg)
+
+Appium是基于C/S结构，所以如果现实GET请求返回**status 200**说明Appium服务启动成功
+
+### 配置测试信息
+在运行测试之前，需要配置一些设备和测试包的信息，这里以Android为例，点击Android的小机器人图片，会看到如下图所示的界面
+
+![](http://ww3.sinaimg.cn/large/6b051377gw1f3cbb1s4g8j210i134tgb.jpg)
+
+如上图所示，必需要配置如下内容：AppPath:Apk安装的路径,Package:应用的包名，LauchActivity:启动的界面，Capablilities部分的内容，剩下的配置都是可选项
+
+配置完成后，启动Inspect，点击放大镜按钮，即可启动Inspect程序,启动后Inspect界面如下所示
+
+![](http://ww4.sinaimg.cn/large/6b051377gw1f3ce876ueqj21kw0qmad6.jpg)
+
+通过Inspect程序可以找到界面对应的相应元素
+
+### 第一个完整的测试：测试登录功能
+
+功能描述：我们测试钱方好近商户版登录界面的功能，具体测试流程为，输入错误的用户名和密码，正确的程序相应是提示用户密码错误，然后在登录按钮下方会有一个“忘记密码？”的按钮显示出来，现在我们需要测试这个流程是正确的，详细步骤如下
+
+#### 1.找到控件ID
+通过如下图方式找到控件的resource Id
+
+![](http://ww3.sinaimg.cn/large/6b051377jw1f3cegm88zwg20xx0fx13u.gif)
+
+由上图可知我们找到了，登录框中各个控件的资源Id
+
+* 用户名输入框：in.haojin.nearbymerchant:id/username
+* 密码输入框：in.haojin.nearbymerchant:id/password
+* 登录按钮：in.haojin.nearbymerchant:id/button
+* 输入密码错误后才显示出来的“忘记密码？”：in.haojin.nearbymerchant:id/tv_forget_pwd
+
+#### 2.新建测试项目
+
+测试代码这里使用Java实现，Appium提供了多种语言的实现如Python,JavaScript,PHP等多语言，你可以选择一门自己熟悉的语言。
+
+在IDE中（Intellij IDEA，Eclipse可以选择）新建一个Java项目，然后在依赖包中一如两个依赖包
+
+![](http://ww1.sinaimg.cn/large/6b051377jw1f3cer6iznzj20va022mxm.jpg)
+
+#### 3.测试代码
+
+测试代码样例如下所示
+
+```
+public class loginActivityTest {
+    AndroidDriver driver;
+    @Before
+    public void setUp() throws MalformedURLException {
+        //初始化资源
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        //设定设备名称
+        desiredCapabilities.setCapability("deviceName", "71UBBL625KW5");
+        //设定Appium server的地址,默认本机地址为"http://127.0.0.1:4723/wd/hub"
+        URL serverAddress = new URL("http://127.0.0.1:4723/wd/hub");
+        driver = new AndroidDriver(serverAddress, desiredCapabilities);
+    }
+    @After
+    public void tearDown() {
+        //方法结束清楚资源
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testLogin() {
+        //找到用户名输入框,输入文字"invalid_username"
+        driver.findElementById("in.haojin.nearbymerchant:id/username").sendKeys("invalid_username");
+        //找到密码输入框,输入密码"invalid_password"
+        driver.findElementById("in.haojin.nearbymerchant:id/password").sendKeys("invalid_password");
+        //点击登录按钮
+        driver.findElementById("in.haojin.nearbymerchant:id/button").click();
+        //由于登录有联网异步操作,需要设置15s的超时,15s内找到"忘记密码?"按钮都算成功
+        MobileElement mobileElement = (MobileElement) new WebDriverWait(driver, 15).until(ExpectedConditions.presenceOfElementLocated(By.id("in.haojin.nearbymerchant:id/tv_forget_pwd")));
+        //断言,确定与预期结果一直
+        Assert.assertEquals(mobileElement.getText(), "忘记密码?");
+    }
+}
+```
+
+运行如上测试，设备上就可以自动完成如上UI测试步骤
+
+
+## 总结
+
+优点：
+
+* 使用Appium最大的优点在与跨平台，一套代码，可能简单的改动一下就可以测试IOS和Android等平台
+* 运行测试不需要再代码中嵌入sdk
+
+缺点：
+
+* 个人感觉Appium比较大问题在Appium 测试代码的Api还是有一定的学习曲线的，前期需要学习各个控件的测试方法以及一些测试机制，并且测试代码需要单独抽出来作为一个项目维护起来
+* 测试运行相较原生测试还是比较慢的，并且Appium不支持多线程，每次只能执行一个session
+* Appium在测试异步操作上比较呆板，需要测试人员手动设置sleep去等待，如果在ci上执行可能会提高测试用例的不稳定性
+* 全平台支持只能在osX上，基于Unit搭建的CI环境暂时还不能复用
+
+> 本文档会不定期更新，请持续关注
