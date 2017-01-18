@@ -23,14 +23,18 @@
 
     <script type="text/javascript" charset="utf-8">
     console.log('html loading')
+
     function test_alert(content){
+      console.log('test_alert call')
       QFPAY.call('alert',{
         title: 'title',
         msg: content
       }, function(ret){
+        console.log(' alert callback into')
         console.log(JSON.stringify(ret))
       })
     }
+
     function test_toast(){
       QFPAY.call('toast', {
           msg: '测试 提示'
@@ -38,11 +42,13 @@
           console.log(cb.ret)
       })
     }
+
     function test_close(){
       QFPAY.call('close', {}, function(cb){
           console.log(cb.ret)
       })
     }
+
     function test_openuri(){
       QFPAY.call('openUri', {
         uri: 'hjsh://ppay/guide'
@@ -50,12 +56,14 @@
         console.log(cb.ret)
       })
     }
+
     function test_get_device_info(){
       QFPAY.call('getDeviceInfo', {}, function(cb){
         console.log(cb.ret)
         console.log('系统' + cb.os +'\n型号' + cb.phonemodel + '\n网络' + cb.network + '\nappname' + cb.appname + '\nappver' + cb.appver + '\nudid' + cb.udid)
       })
     }
+
     function test_get_location(){
       QFPAY.call('getLocation', {
         type: 'WGS84'
@@ -63,6 +71,7 @@
         alert('经纬度'+cb.longitude+ ' '+ cb.latitude)
       })
     }
+
     function test_set_nav_title(){
       QFPAY.call('setNavTitle',{
         title: '我是红底绿字',
@@ -72,6 +81,7 @@
 
       })
     }
+
     function test_set_nav_back(){
       QFPAY.call('setNavBack', {
         type: 'uri',
@@ -80,6 +90,7 @@
         console.log(cb.ret)
       })
     }
+
     function test_set_nav_menus(){
       QFPAY.call('setNavMenu', {
         menus: [
@@ -105,6 +116,7 @@
         console.log(cb.ret)
       })
     }
+
     function test_clear_nav_menus(){
       QFPAY.call('setNavMenu', {
         menus: [
@@ -115,6 +127,7 @@
         console.log(cb.ret)
       })
     }
+
     function test_scan_qrcode(){
       QFPAY.call('scanQrcode', {}, function(cb){
         console.log(cb.ret)
